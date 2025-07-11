@@ -4,22 +4,30 @@ import * as actionLogServices from "../services/actionLog.services.js";
 export const getAllTasks = async (_, res) => {
   try {
     const tasks = await taskServices.getAllTasks();
-    return res.status(200).json({ tasks });
+    return res.status(200).json({ tasks, success: true });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ message: "Failed to fetch tasks" });
+    return res
+      .status(500)
+      .json({ message: "Failed to fetch tasks", success: true });
   }
 };
 
 export const createTask = async (req, res) => {
   try {
-    const { title, description = "", status= "Todo", priority= "Low", assignedTo="" } = req.body;
+    const {
+      title,
+      description = "",
+      status = "Todo",
+      priority = "Low",
+      assignedTo = "",
+    } = req.body;
     const task = await taskServices.createTask({
       title,
       description,
       status,
       priority,
-      assignedTo
+      assignedTo,
     });
 
     await actionLogServices.createActionLog({
@@ -29,13 +37,19 @@ export const createTask = async (req, res) => {
       details: { field: "task", before: null, after: task },
     });
 
-    return res.status(201).json({ task });
+    return res
+      .status(201)
+      .json({ task, success: true, message: "Task created successfully" });
   } catch (error) {
     if (error.code === 11000) {
-      return res.status(400).json({ message: "Task title must be unique" });
+      return res
+        .status(400)
+        .json({ message: "Task title must be unique", success: false });
     }
     console.error(error);
-    return res.status(500).json({ message: "Failed to create task" });
+    return res
+      .status(500)
+      .json({ message: "Failed to create task", success: false });
   }
 };
 
@@ -46,7 +60,9 @@ export const updateTask = async (req, res) => {
 
     const existingTask = await taskServices.getTaskById(id);
     if (!existingTask) {
-      return res.status(404).json({ message: "Task not found" });
+      return res
+        .status(404)
+        .json({ message: "Task not found", success: false });
     }
 
     const updatedTask = await taskServices.updateTask(id, updates);
@@ -75,10 +91,18 @@ export const updateTask = async (req, res) => {
       });
     }
 
-    return res.status(200).json({ task: updatedTask });
+    return res
+      .status(200)
+      .json({
+        task: updatedTask,
+        success: true,
+        message: "Task updated successfully",
+      });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ message: "Failed to update task" });
+    return res
+      .status(500)
+      .json({ message: "Failed to update task", success: false });
   }
 };
 
@@ -94,10 +118,14 @@ export const deleteTask = async (req, res) => {
       details: { field: "task", before: deleted.title, after: null },
     });
 
-    return res.status(200).json({ message: "Task deleted" });
+    return res
+      .status(200)
+      .json({ message: "Task deleted successfully", success: true });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ message: "Failed to delete task" });
+    return res
+      .status(500)
+      .json({ message: "Failed to delete task", success: false });
   }
 };
 
@@ -108,7 +136,9 @@ export const moveTask = async (req, res) => {
 
     const existingTask = await taskServices.getTaskById(id);
     if (!existingTask) {
-      return res.status(404).json({ message: "Task not found" });
+      return res
+        .status(404)
+        .json({ message: "Task not found", success: false });
     }
 
     const updatedTask = await taskServices.moveTask(id, status);
@@ -120,10 +150,16 @@ export const moveTask = async (req, res) => {
       details: { field: "status", before: existingTask.status, after: status },
     });
 
-    return res.status(200).json({ task: updatedTask });
+    return res.status(200).json({
+      task: updatedTask,
+      message: "Task status changed successfully",
+      success: true,
+    });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ message: "Failed to move task" });
+    return res
+      .status(500)
+      .json({ message: "Failed to change task status", success: false });
   }
 };
 
@@ -134,7 +170,9 @@ export const assignTask = async (req, res) => {
 
     const existingTask = await taskServices.getTaskById(id);
     if (!existingTask) {
-      return res.status(404).json({ message: "Task not found" });
+      return res
+        .status(404)
+        .json({ message: "Task not found", success: false });
     }
 
     const updatedTask = await taskServices.assignTask(id, userName);
@@ -150,10 +188,18 @@ export const assignTask = async (req, res) => {
       },
     });
 
-    return res.status(200).json({ task: updatedTask });
+    return res
+      .status(200)
+      .json({
+        task: updatedTask,
+        message: "Task assigned successfully",
+        success: true,
+      });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ message: "Failed to assign task" });
+    return res
+      .status(500)
+      .json({ message: "Failed to assign task", success: false });
   }
 };
 
@@ -162,12 +208,17 @@ export const smartAssignTask = async (req, res) => {
     const { id } = req.params;
 
     const task = await taskServices.getTaskById(id);
-    if (!task) return res.status(404).json({ message: "Task not found" });
+    if (!task)
+      return res
+        .status(404)
+        .json({ message: "Task not found", success: false });
 
     const grouped = await taskServices.getAllActiveTasksGroupedByUser();
 
     if (!grouped.length) {
-      return res.status(404).json({ message: "No users available" });
+      return res
+        .status(404)
+        .json({ message: "No users available", success: false });
     }
 
     const leastUser = grouped.reduce((min, user) =>
@@ -187,10 +238,13 @@ export const smartAssignTask = async (req, res) => {
       },
     });
 
-    return res.status(200).json({ task: updated });
+    return res
+      .status(200)
+      .json({ task: updated, success: true, message: "Task assigned smartly" });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ message: "Smart assign failed" });
+    return res
+      .status(500)
+      .json({ message: "Smart assign failed", success: false });
   }
 };
-

@@ -4,11 +4,11 @@ const actionLogSchema = new mongoose.Schema(
   {
     who: {
       type: String,
-      required: true, // userName
+      required: true,
     },
-    taskId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "task",
+    taskTitle: {
+      type: String,
+      required: true,
     },
     action: {
       type: String,

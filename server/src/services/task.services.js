@@ -38,7 +38,7 @@ export const assignTask = async (taskId, userName) => {
 
 export const getAllActiveTasksGroupedByUser = async () => {
   return await Task.aggregate([
-    { $match: { status: { $ne: "Done" }, assignedTo: { $ne: null } } },
+    { $match: { status: { $ne: "Done" } } },
     {
       $group: {
         _id: "$assignedTo",

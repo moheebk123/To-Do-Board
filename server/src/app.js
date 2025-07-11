@@ -24,7 +24,6 @@ app.use(cookieParser());
 
 app.use(verifyAuthentication);
 
-app.use("/note", routes?.noteRoutes);
 app.use("/auth", routes?.authRoutes);
 
 try {

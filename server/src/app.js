@@ -3,7 +3,7 @@ import express from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import { connectDB } from "./config/db-client.config.js";
-import * as routes from "./routes/index.routes.js";
+import routes from "./routes/index.routes.js";
 import {verifyAuthentication} from "./middlewares/verify.middleware.js";
 
 dotenv.config();
@@ -24,7 +24,7 @@ app.use(cookieParser());
 
 app.use(verifyAuthentication);
 
-app.use("/auth", routes?.authRoutes);
+app.use("/api", routes);
 
 try {
   await connectDB();

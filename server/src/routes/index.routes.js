@@ -1,8 +1,8 @@
 import express from "express";
-import { authRoutes } from "./auth.route.js";
-import { taskRoutes } from "./task.route.js";
-import { actionLogRoutes } from "./actionLog.route.js";
-import { userRoutes } from "./user.route.js";
+import { authRoutes } from "./auth.routes.js";
+import { taskRoutes } from "./task.routes.js";
+import { actionLogRoutes } from "./actionLog.routes.js";
+import { userRoutes } from "./user.routes.js";
 
 const router = express.Router();
 

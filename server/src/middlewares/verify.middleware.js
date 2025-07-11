@@ -1,4 +1,5 @@
-import * as services from "../services/index.services.js";
+import * as userServices from "../services/user.services.js";
+import * as authServices from "../services/auth.services.js";
 
 export const verifyAuthentication = async (req, res, next) => {
   const { access_token, refresh_token } = req.cookies;
@@ -8,8 +9,8 @@ export const verifyAuthentication = async (req, res, next) => {
   }
 
   try {
-    const decodedAccessToken = services.verifyToken(access_token);
-    const loggedUser= await services.getUserById(decodedAccessToken?.id);
+    const decodedAccessToken = authServices.verifyToken(access_token);
+    const loggedUser= await userServices.getUserById(decodedAccessToken?.id);
     if (loggedUser) {
       req.user = loggedUser;
     }
@@ -18,7 +19,7 @@ export const verifyAuthentication = async (req, res, next) => {
   } catch (error) {
     if (refresh_token) {
       try {
-        const decodedRefreshToken = services.verifyToken(
+        const decodedRefreshToken = authServices.verifyToken(
           refresh_token,
           process.env.JWT_REFRESH_SECRET
         );
@@ -28,10 +29,12 @@ export const verifyAuthentication = async (req, res, next) => {
           return next();
         }
 
-        const loggedUser= await services.getUserById(decodedRefreshToken?.id);
+        const loggedUser = await userServices.getUserById(
+          decodedRefreshToken?.id
+        );
 
         if (loggedUser) {
-          const newAccessToken = services.generateToken(
+          const newAccessToken = authServices.generateToken(
             {
               id: loggedUser._id,
               userName: loggedUser.userName,

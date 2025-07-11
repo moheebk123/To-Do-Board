@@ -34,7 +34,7 @@ export const createTask = async (req, res) => {
       who: req.user.userName,
       taskTitle: task.title,
       action: "CREATE",
-      details: { field: "task", before: null, after: task },
+      details: { field: "task", before: null, after: task.title },
     });
 
     return res
@@ -225,7 +225,7 @@ export const smartAssignTask = async (req, res) => {
       user.count < min.count ? user : min
     );
 
-    const updated = await taskServices.assignTask(id, leastUser._id);
+    const updated = await taskServices.assignTask(id, leastUser.userName);
 
     await actionLogServices.createActionLog({
       who: req.user.userName,
@@ -234,7 +234,7 @@ export const smartAssignTask = async (req, res) => {
       details: {
         field: "assignedTo",
         before: String(task.assignedTo),
-        after: leastUser._id,
+        after: leastUser.userName,
       },
     });
 

@@ -1,4 +1,5 @@
 import { Task } from "../models/task.model.js";
+import { User } from "../models/user.model.js";
 
 export const createTask = async (taskData) => {
   return await Task.create(taskData);
@@ -37,12 +38,20 @@ export const assignTask = async (taskId, userName) => {
 };
 
 export const getAllActiveTasksGroupedByUser = async () => {
-  return await Task.aggregate([
-    { $match: { status: { $ne: "Done" } } },
+  return await User.aggregate([
     {
-      $group: {
-        _id: "$assignedTo",
-        count: { $sum: 1 },
+      $lookup: {
+        from: "tasks",
+        localField: "userName",
+        foreignField: "assignedTo",
+        as: "activeTasks",
+        pipeline: [{ $match: { status: { $ne: "Done" } } }],
+      },
+    },
+    {
+      $project: {
+        userName: "$userName",
+        count: { $size: "$activeTasks" },
       },
     },
   ]);

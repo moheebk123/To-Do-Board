@@ -1,0 +1,23 @@
+{
+  "name": "todo-board",
+  "version": "1.0.0",
+  "description": "To-do board application where multiple users can log in, manage tasks, and see changes happen in real time.",
+  "main": "src/app.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "node --watch src/app.js"
+  },
+  "author": "Moheeb Khan",
+  "license": "ISC",
+  "dependencies": {
+    "argon2": "^0.43.0",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^17.0.1",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongodb": "^6.16.0",
+    "mongoose": "^8.14.2"
+  }
+}

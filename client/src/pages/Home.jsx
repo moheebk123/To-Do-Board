@@ -1,5 +1,6 @@
 import { useEffect } from "react";
-import { ActivityLog, Header, Users } from "../components";
+import { ActivityLog, Header, Tasks, Users } from "../components";
+import "../assets/styles/home.css";
 
 const Home = () => {
   useEffect(() => {
@@ -9,8 +10,11 @@ const Home = () => {
   return (
     <div>
       <Header />
-      <Users />
-      <ActivityLog />
+      <Tasks />
+      <div className="users-and-activity-box">
+        <Users />
+        <ActivityLog />
+      </div>
     </div>
   );
 };

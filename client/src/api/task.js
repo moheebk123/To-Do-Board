@@ -15,13 +15,13 @@ class TaskService {
       }
 
       return {
-        data: data.data || [],
+        tasks: data.tasks || [],
         message: data.message,
         type: "success",
       };
     } catch (error) {
       return {
-        data: [],
+        tasks: [],
         message: error.message || "Something went wrong",
         type: "error",
       };

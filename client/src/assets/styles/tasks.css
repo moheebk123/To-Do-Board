@@ -1,0 +1,135 @@
+.kanban-board {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+@media (min-width: 768px) {
+  .kanban-board {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (min-width: 1024px) {
+  .kanban-board {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+.kanban-column {
+  background-color: #f9fafb;
+  border-radius: 10px;
+  height: fit-content;
+  overflow: hidden;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.kanban-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+}
+
+.kanban-header.todo {
+  background-color: #fca2a8;
+}
+.kanban-header.in-progress {
+  background-color: #58bbfd;
+}
+.kanban-header.done {
+  background-color: #77fca5;
+}
+
+.kanban-header h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.kanban-header .count {
+  background: #334155;
+  color: white;
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.task-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin: 1em;
+}
+
+.task-card {
+  background-color: white;
+  border: 1px solid #e5e7eb;
+  padding: 0.75rem;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.task-title {
+  font-weight: bold;
+  font-size: 1rem;
+  color: #1f2937;
+  text-transform: capitalize;
+}
+
+.task-priority-assigned-box {
+  display: flex;
+  gap: 1em;
+  margin-block: 0.5em;
+}
+
+.task-priority {
+  font-size: 0.75rem;
+  font-weight: 600;
+  width: fit-content;
+  padding: 5px 10px;
+  border-radius: 4px;
+  text-transform: capitalize;
+}
+
+.priority-low {
+  background-color: #facc15;
+}
+
+.priority-medium {
+  background-color: #fb923c;
+}
+
+.priority-high {
+  background-color: #ef4444;
+}
+
+.task-assigned {
+  font-size: 0.8rem;
+  padding: 5px 10px;
+  border-radius: 4px;
+  width: fit-content;
+  font-weight: 600;
+}
+
+.task-assigned.unassigned {
+  background-color: #d1d5db;
+  color: #1f2937;
+}
+
+.task-assigned.assigned {
+  background-color: #a78bfa;
+}
+
+.task-date {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #6b7280;
+}

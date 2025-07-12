@@ -1,0 +1,12 @@
+.users-and-activity-box {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+@media (min-width: 768px) {
+  .users-and-activity-box {
+    grid-template-columns: 1fr 1fr;
+  }
+}

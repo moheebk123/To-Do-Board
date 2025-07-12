@@ -6,6 +6,7 @@ import Error from "./common/Error.jsx";
 import AuthWrapper from "./common/AuthWrapper.jsx";
 import ActivityLog from "./common/ActivityLog.jsx";
 import Users from "./common/Users.jsx";
+import Tasks from "./common/Tasks.jsx";
 
 export {
   Header,
@@ -14,5 +15,6 @@ export {
   Error,
   AuthWrapper,
   ActivityLog,
-  Users
+  Users,
+  Tasks
 };

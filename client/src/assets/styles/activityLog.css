@@ -1,0 +1,51 @@
+.activity-log-container {
+  padding: 1rem;
+  background-color: #f9fafb;
+  border-radius: 8px;
+  max-height: 560px;
+  overflow-y: auto;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.activity-log-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.activity-log-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.activity-log-item {
+  padding: 0.75rem;
+  border-radius: 6px;
+  background-color: #fff;
+  border: 1px solid #e5e7eb;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.log-description {
+  font-size: 0.95rem;
+  color: #111827;
+
+  & > span {
+    font-weight: 600;
+  }
+}
+
+.log-time {
+  font-size: 0.85rem;
+  color: #6b7280;
+  margin-top: 4px;
+}
+
+.no-log {
+  text-align: center;
+  color: #6b7280;
+}

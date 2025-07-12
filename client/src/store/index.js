@@ -3,6 +3,7 @@ import alertSlice, { alertActions } from "./alert";
 import userDataSlice, { userDataActions } from "./userData";
 import actionLogSlice, { actionLogActions } from "./actionLog";
 import taskSlice, { taskActions } from "./taskData";
+import usersSlice, { usersActions } from "./users";
 
 export const store = configureStore({
   reducer: {
@@ -10,7 +11,14 @@ export const store = configureStore({
     userData: userDataSlice.reducer,
     actionLogData: actionLogSlice.reducer,
     taskData: taskSlice.reducer,
+    users: usersSlice.reducer,
   },
 });
 
-export { alertActions, userDataActions, actionLogActions, taskActions };
+export {
+  alertActions,
+  userDataActions,
+  actionLogActions,
+  taskActions,
+  usersActions,
+};

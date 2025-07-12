@@ -1,15 +1,18 @@
 import { useEffect } from "react";
-import { ActivityLog, Header } from "../components";
+import { ActivityLog, Header, Users } from "../components";
 
 const Home = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  return <div>
-    <Header />
-    <ActivityLog />
-  </div>;
+  return (
+    <div>
+      <Header />
+      <Users />
+      <ActivityLog />
+    </div>
+  );
 };
 
 export default Home;

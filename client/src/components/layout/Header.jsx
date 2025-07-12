@@ -38,7 +38,7 @@ const Header = () => {
 
         {openDropdown && (
           <div className="dropdown">
-            <div className="user-info">
+            <div className="user-profile">
               <div className="user-initial">
                 {user?.userName?.charAt(0)?.toUpperCase()}
               </div>

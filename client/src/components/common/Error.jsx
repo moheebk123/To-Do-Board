@@ -8,8 +8,8 @@ const Error = ({ type = "not-found" }) => {
       icon: <MdSearchOff className="error-icon" />,
       title: "404 - Page Not Found",
       message: "The page you're looking for doesn't exist.",
-      buttonLabel: "Go to Login",
-      route: "/login",
+      buttonLabel: "Go Home",
+      route: "/",
     },
     "not-allowed": {
       icon: <MdLock className="error-icon" />,

@@ -15,8 +15,8 @@ const Error = ({ type = "not-found" }) => {
       icon: <MdLock className="error-icon" />,
       title: "403 - Access Denied",
       message: "You are not allowed to view this page.",
-      buttonLabel: "Go to Login",
-      route: "/login",
+      buttonLabel: "Go Home",
+      route: "/",
     },
     default: {
       icon: <MdError className="error-icon" />,

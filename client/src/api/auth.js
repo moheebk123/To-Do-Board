@@ -19,15 +19,17 @@ class AuthService {
       }
 
       return {
-        data: data.data || null,
+        user: data.user || null,
         message: data.message,
         type: "success",
+        success: data.success || true,
       };
     } catch (error) {
       return {
-        data: null,
+        user: null,
         message: error.message || "Something went wrong",
         type: "error",
+        success: false,
       };
     }
   }
@@ -50,15 +52,17 @@ class AuthService {
       }
 
       return {
-        data: data.data || null,
+        user: data.user || null,
         message: data.message,
         type: "success",
+        success: data.success || true,
       };
     } catch (error) {
       return {
-        data: null,
+        user: null,
         message: error.message || "Something went wrong",
         type: "error",
+        success: false,
       };
     }
   }
@@ -79,11 +83,13 @@ class AuthService {
       return {
         message: data.message,
         type: "success",
+        success: data.success || true,
       };
     } catch (error) {
       return {
         message: error.message || "Something went wrong",
         type: "error",
+        success: false,
       };
     }
   }
@@ -102,15 +108,18 @@ class AuthService {
       }
 
       return {
-        data: data.user,
+        user: data.user || null,
         message: "Authenticated",
         type: "success",
+        success: true
       };
     } catch (error) {
+      console.log(error.message)
       return {
-        data: null,
+        user: null,
         message: error.message,
         type: "error",
+        success: false,
       };
     }
   }

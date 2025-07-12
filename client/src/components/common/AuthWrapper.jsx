@@ -1,9 +1,15 @@
-import { useState } from "react";
+import { useRef } from "react";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import authService from "../../api/auth";
+import { alertActions, userDataActions } from "../../store";
 import "../../assets/styles/auth.css";
 
 const AuthWrapper = ({ type = "login" }) => {
-  const [form, setForm] = useState({ userName: "", password: "" });
+  const userNameRef = useRef(null);
+  const passwordRef = useRef(null);
+
+  const dispatch = useDispatch();
 
   const content = {
     login: {
@@ -12,7 +18,6 @@ const AuthWrapper = ({ type = "login" }) => {
       question: "Don't have an account?",
       routeText: "Register",
       route: "/register",
-      apiCall: () => console.log("Login with", form),
     },
     register: {
       heading: "Create a new account",
@@ -20,20 +25,51 @@ const AuthWrapper = ({ type = "login" }) => {
       question: "Already have an account?",
       routeText: "Login",
       route: "/login",
-      apiCall: () => console.log("Register with", form),
     },
   };
 
-  const { heading, buttonText, question, routeText, route, apiCall } =
-    content[type];
+  const { heading, buttonText, question, routeText, route } = content[type];
 
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    apiCall();
+    const userName = userNameRef.current.value;
+    const password = passwordRef.current.value;
+
+    if (!userName || !password) {
+      dispatch(
+        alertActions.showAlert({
+          show: true,
+          message: "All fields are required",
+          type: "error",
+        })
+      );
+    }
+
+    const payload = {
+      userName,
+      password,
+    };
+
+    let response;
+    if (type === "login") {
+      response = await authService.login(payload);
+    } else if (type === "register") {
+      response = await authService.register(payload);
+    }
+
+    dispatch(
+      alertActions.showAlert({
+        show: true,
+        message: response.message,
+        type: response.type,
+      })
+    );
+
+    if (response.user && response.user.userName) {
+      dispatch(
+        userDataActions.updateUser(response.user)
+      );
+    }
   };
 
   return (
@@ -42,19 +78,17 @@ const AuthWrapper = ({ type = "login" }) => {
         <h2 className="auth-heading">{heading}</h2>
         <form className="auth-form" onSubmit={handleSubmit}>
           <input
+            ref={userNameRef}
             type="text"
             name="userName"
             placeholder="Username"
-            value={form.userName}
-            onChange={handleChange}
             className="auth-input"
           />
           <input
+            ref={passwordRef}
             type="password"
             name="password"
             placeholder="Password"
-            value={form.password}
-            onChange={handleChange}
             className="auth-input"
           />
           <button type="submit" className="auth-submit">

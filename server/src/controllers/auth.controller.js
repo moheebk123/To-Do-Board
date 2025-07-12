@@ -54,7 +54,11 @@ export const handleRegister = async (req, res) => {
         secure: true,
         maxAge: 7 * 24 * 60 * 60 * 1000,
       })
-      .json({ message: "User registered successfully", success: true });
+      .json({
+        message: "User registered successfully",
+        success: true,
+        user: { _id: user._id, userName: user.userName },
+      });
   } catch (error) {
     console.error(error);
     return res
@@ -117,7 +121,11 @@ export const handleLogin = async (req, res) => {
         secure: true,
         maxAge: 7 * 24 * 60 * 60 * 1000,
       })
-      .json({ message: "Login successful", success: true });
+      .json({
+        message: "Login successful",
+        success: true,
+        user: { _id: user._id, userName: user.userName },
+      });
   } catch (error) {
     console.error(error);
     return res

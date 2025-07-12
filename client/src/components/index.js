@@ -6,6 +6,7 @@ import AlertBox from "./common/AlertBox";
 
 import Error from "./common/Error.jsx";
 import AuthWrapper from "./common/AuthWrapper.jsx";
+import ActivityLog from "./common/ActivityLog.jsx";
 
 export {
   Header,
@@ -13,5 +14,6 @@ export {
   AlertBox,
   // Logo,
   Error,
-  AuthWrapper
+  AuthWrapper,
+  ActivityLog,
 };

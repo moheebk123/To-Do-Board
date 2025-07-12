@@ -15,13 +15,13 @@ class UserService {
       }
 
       return {
-        data: data.data || [],
+        users: data.users || [],
         message: data.message,
         type: "success",
       };
     } catch (error) {
       return {
-        data: [],
+        users: [],
         message: error.message || "Something went wrong",
         type: "error",
       };

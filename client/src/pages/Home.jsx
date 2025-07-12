@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Header } from "../components";
+import { ActivityLog, Header } from "../components";
 
 const Home = () => {
   useEffect(() => {
@@ -8,7 +8,7 @@ const Home = () => {
 
   return <div>
     <Header />
-    Todo Board
+    <ActivityLog />
   </div>;
 };
 

@@ -15,8 +15,8 @@ class ActionLogService {
       }
 
       return {
-        data: data.data || [],
-        message: data.message,
+        logs: data.logs || [],
+        message: data.message || "Logs fetched",
         type: "success",
       };
     } catch (error) {

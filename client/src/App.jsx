@@ -10,7 +10,6 @@ import {
 } from "react-router-dom";
 import { NotFound, NotAllowed } from "./pages";
 import { Loader, AlertBox } from "./components";
-import ProtectedRoute from "./routes/ProtectedRoute.jsx";
 import { authService } from "./api";
 import { userDataActions } from "./store";
 
@@ -47,14 +46,6 @@ const LayoutHandler = () => {
         <Route path="*" element={<NotFound />} />
 
         {/* Protected Routes for Not Logged Users */}
-        <Route
-          element={
-            <ProtectedRoute
-              isAuthenticated={isAuthenticated}
-              isUserAllowed={false}
-            />
-          }
-        >
           <Route
             path="register"
             element={isAuthenticated ? <Navigate to="/" /> : <Register />}
@@ -63,22 +54,12 @@ const LayoutHandler = () => {
             path="login"
             element={isAuthenticated ? <Navigate to="/" /> : <Login />}
           />
-        </Route>
 
         {/* Protected Routes for Logged Users */}
-        <Route
-          element={
-            <ProtectedRoute
-              isAuthenticated={isAuthenticated}
-              isUserAllowed={true}
-            />
-          }
-        >
           <Route
             path="/"
             element={isAuthenticated ? <Home /> : <Navigate to="/login" />}
           />
-        </Route>
       </Routes>
     </Suspense>
   );

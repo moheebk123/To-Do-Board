@@ -7,6 +7,7 @@ import "../../assets/styles/users.css";
 const Users = () => {
   const dispatch = useDispatch();
   const { users } = useSelector((state) => state.users);
+  const { tasks } = useSelector((state) => state.taskData);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -18,14 +19,26 @@ const Users = () => {
     fetchUsers();
   }, [dispatch]);
 
+  const usersData = users.map((user) => {
+    const assignedTasks = tasks.reduce(
+      (assignedTasks, tasks) =>
+        tasks.assignedTo === user.userName ? assignedTasks + 1 : assignedTasks,
+      0
+    );
+    return {
+      ...user,
+      taskCount: assignedTasks,
+    };
+  });
+
   return (
     <div className="users-container">
       <h2 className="users-title">Active Users</h2>
       <div className="users-list">
-        {users.length === 0 ? (
+        {usersData.length === 0 ? (
           <p className="no-user">No users found.</p>
         ) : (
-          users.map((user, idx) => (
+          usersData.map((user, idx) => (
             <div key={idx} className="user-card">
               <div className="user-avatar">
                 {user.userName.charAt(0).toUpperCase()}

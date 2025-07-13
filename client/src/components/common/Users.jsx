@@ -1,36 +1,6 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { userService } from "../../api";
-import { usersActions } from "../../store";
 import "../../assets/styles/users.css";
 
-const Users = () => {
-  const dispatch = useDispatch();
-  const { users } = useSelector((state) => state.users);
-  const { tasks } = useSelector((state) => state.taskData);
-
-  useEffect(() => {
-    const fetchUsers = async () => {
-      const response = await userService.getAllUsers();
-      if (response.type === "success" && response.users) {
-        dispatch(usersActions.updateUsers({ users: response.users }));
-      }
-    };
-    fetchUsers();
-  }, [dispatch]);
-
-  const usersData = users.map((user) => {
-    const assignedTasks = tasks.reduce(
-      (assignedTasks, tasks) =>
-        tasks.assignedTo === user.userName ? assignedTasks + 1 : assignedTasks,
-      0
-    );
-    return {
-      ...user,
-      taskCount: assignedTasks,
-    };
-  });
-
+const Users = ({ usersData }) => {
   return (
     <div className="users-container">
       <h2 className="users-title">Active Users</h2>

@@ -1,38 +1,9 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { taskService } from "../../api";
-import { taskActions } from "../../store";
 import "../../assets/styles/tasks.css";
 
-const Tasks = () => {
-  const dispatch = useDispatch();
-  const { tasks } = useSelector((state) => state.taskData);
-
-  useEffect(() => {
-    const fetchTasks = async () => {
-      const response = await taskService.getAllTasks();
-      if (response.type === "success" && response.tasks) {
-        dispatch(taskActions.updateTasks({ tasks: response.tasks }));
-      }
-    };
-    fetchTasks();
-  }, [dispatch]);
-
-  const columns = {
-    Todo: [],
-    "In Progress": [],
-    Done: [],
-  };
-
-  tasks.forEach((task) => {
-    if (columns[task.status]) {
-      columns[task.status].push(task);
-    }
-  });
-
+const Tasks = ({ taskData }) => {
   return (
     <div className="kanban-board">
-      {Object.entries(columns).map(([status, items]) => (
+      {Object.entries(taskData).map(([status, items]) => (
         <div key={status} className="kanban-column">
           <div
             className={`kanban-header ${status

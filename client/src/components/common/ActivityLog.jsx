@@ -1,22 +1,8 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import "../../assets/styles/activityLog.css";
-import { useEffect } from "react";
-import { actionLogService } from "../../api";
-import { actionLogActions } from "../../store";
 
 const ActivityLog = () => {
-  const dispatch = useDispatch();
   const { logs } = useSelector((state) => state.actionLogData);
-
-  useEffect(() => {
-    const fetchLogs = async () => {
-      const response = await actionLogService.getLatestLogs();
-      if (response.type === "success" && response.logs) {
-        dispatch(actionLogActions.updateActionLog({ logs: response.logs }));
-      }
-    };
-    fetchLogs();
-  }, [dispatch]);
 
   return (
     <div className="activity-log-container">
@@ -36,8 +22,7 @@ const ActivityLog = () => {
                 </p>
                 <p className="log-description">
                   Changed <span>{!details.field ? "_" : details.field}</span>{" "}
-                  from{" "}
-                  <span>{!details.before ? "_" : details.before}</span> to{" "}
+                  from <span>{!details.before ? "_" : details.before}</span> to{" "}
                   <span>{!details.after ? "_" : details.after}</span>
                 </p>
                 <p className="log-time">

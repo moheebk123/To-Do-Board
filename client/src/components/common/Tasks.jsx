@@ -23,6 +23,22 @@ const Tasks = ({ taskData, handleChangeTaskInput, handleHideTaskInput, fetchData
     handleHideTaskInput();
   };
 
+  const smartAssign = async (id) => {
+    const response = await taskService.smartAssignTask(id);
+    if (response.type === "success") {
+      fetchData();
+    }
+    dispatch(
+      alertActions.showAlert({
+        show: true,
+        message: response.message,
+        type: response.type,
+      })
+    );
+
+    handleHideTaskInput();
+  };
+
   return (
     <div className="kanban-board">
       {Object.entries(taskData).map(([status, items]) => (
@@ -47,7 +63,10 @@ const Tasks = ({ taskData, handleChangeTaskInput, handleHideTaskInput, fetchData
                   className="task-card"
                   onClick={() => handleChangeTaskInput("edit", task)}
                 >
-                  <button className="btn delete" onClick={() => deleteTask(task._id)}>
+                  <button
+                    className="btn delete"
+                    onClick={() => deleteTask(task._id)}
+                  >
                     <FaTrash />
                   </button>
                   <div className="task-title">{task.title}</div>
@@ -66,6 +85,9 @@ const Tasks = ({ taskData, handleChangeTaskInput, handleHideTaskInput, fetchData
                     >
                       {task.assignedTo || "Not Assigned"}
                     </div>
+                    {!task.assignedTo && (
+                      <button className="btn save assign" onClick={() => smartAssign(task._id)}>Smart Assign</button>
+                    )}
                   </div>
 
                   <div className="task-date">

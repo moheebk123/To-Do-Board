@@ -66,6 +66,11 @@
   background-color: #1e40af;
 }
 
+.btn.save.assign {
+  flex: 0;
+  min-width: fit-content;
+}
+
 .btn.close {
   background-color: #6b7280;
 }

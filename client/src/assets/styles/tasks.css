@@ -106,6 +106,7 @@
 .task-priority-assigned-box {
   display: flex;
   gap: 1em;
+  align-items: center;
   margin-block: 0.5em;
 }
 

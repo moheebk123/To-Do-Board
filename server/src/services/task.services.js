@@ -29,14 +29,6 @@ export const moveTask = async (taskId, newStatus) => {
   );
 };
 
-export const assignTask = async (taskId, userName) => {
-  return await Task.findByIdAndUpdate(
-    taskId,
-    { assignedTo: userName },
-    { new: true }
-  );
-};
-
 export const getAllActiveTasksGroupedByUser = async () => {
   return await User.aggregate([
     {

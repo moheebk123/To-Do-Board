@@ -163,46 +163,6 @@ export const moveTask = async (req, res) => {
   }
 };
 
-export const assignTask = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { userName } = req.body;
-
-    const existingTask = await taskServices.getTaskById(id);
-    if (!existingTask) {
-      return res
-        .status(404)
-        .json({ message: "Task not found", success: false });
-    }
-
-    const updatedTask = await taskServices.assignTask(id, userName);
-
-    await actionLogServices.createActionLog({
-      who: req.user.userName,
-      taskTitle: updatedTask.title,
-      action: "ASSIGN",
-      details: {
-        field: "assignedTo",
-        before: existingTask.assignedTo,
-        after: userName,
-      },
-    });
-
-    return res
-      .status(200)
-      .json({
-        task: updatedTask,
-        message: "Task assigned successfully",
-        success: true,
-      });
-  } catch (error) {
-    console.error(error);
-    return res
-      .status(500)
-      .json({ message: "Failed to assign task", success: false });
-  }
-};
-
 export const smartAssignTask = async (req, res) => {
   try {
     const { id } = req.params;

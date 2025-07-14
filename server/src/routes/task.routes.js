@@ -15,8 +15,6 @@ router
 
 router.patch("/:id/move", taskControllers.moveTask);
 
-router.patch("/:id/assign", taskControllers.assignTask);
-
 router.post("/:id/smart-assign", taskControllers.smartAssignTask);
 
 export const taskRoutes = router;

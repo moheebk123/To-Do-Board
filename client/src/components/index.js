@@ -7,6 +7,7 @@ import AuthWrapper from "./common/AuthWrapper.jsx";
 import ActivityLog from "./common/ActivityLog.jsx";
 import Users from "./common/Users.jsx";
 import Tasks from "./common/Tasks.jsx";
+import TaskInput from "./common/TaskInput.jsx";
 
 export {
   Header,
@@ -16,5 +17,6 @@ export {
   AuthWrapper,
   ActivityLog,
   Users,
-  Tasks
+  Tasks,
+  TaskInput,
 };

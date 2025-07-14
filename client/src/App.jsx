@@ -12,6 +12,7 @@ import { NotFound, NotAllowed } from "./pages";
 import { Loader, AlertBox } from "./components";
 import { authService } from "./api";
 import { userDataActions } from "./store";
+import "./App.css";
 
 // Import Pages Through Lazy Loading
 const Home = lazy(() => import("./pages/Home.jsx"));

@@ -1,6 +1,28 @@
+import { useDispatch } from "react-redux";
+import { FaTrash } from "react-icons/fa";
+import { taskService } from "../../api";
+import { alertActions } from "../../store";
 import "../../assets/styles/tasks.css";
 
-const Tasks = ({ taskData }) => {
+const Tasks = ({ taskData, handleChangeTaskInput, handleHideTaskInput, fetchData }) => {
+  const dispatch = useDispatch();
+
+  const deleteTask = async (id) => {
+    const response = await taskService.deleteTask(id);
+    if (response.type === "success") {
+      fetchData();
+    }
+    dispatch(
+      alertActions.showAlert({
+        show: true,
+        message: response.message,
+        type: response.type,
+      })
+    );
+
+    handleHideTaskInput();
+  };
+
   return (
     <div className="kanban-board">
       {Object.entries(taskData).map(([status, items]) => (
@@ -20,7 +42,14 @@ const Tasks = ({ taskData }) => {
               </div>
             ) : (
               items.map((task) => (
-                <div key={task._id} className="task-card">
+                <div
+                  key={task._id}
+                  className="task-card"
+                  onClick={() => handleChangeTaskInput("edit", task)}
+                >
+                  <button className="btn delete" onClick={() => deleteTask(task._id)}>
+                    <FaTrash />
+                  </button>
                   <div className="task-title">{task.title}</div>
 
                   <div className="task-priority-assigned-box">

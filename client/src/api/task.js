@@ -140,35 +140,6 @@ class TaskService {
     }
   }
 
-  async assignTask(id, payload) {
-    try {
-      const res = await fetch(`${API_URL}/${id}/assign`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify(payload),
-      });
-
-      const data = await res.json();
-
-      if (!data.success) {
-        throw new Error(data.message || "Failed to assign task");
-      }
-
-      return {
-        data: data.data,
-        message: data.message,
-        type: "success",
-      };
-    } catch (error) {
-      return {
-        data: null,
-        message: error.message,
-        type: "error",
-      };
-    }
-  }
-
   async smartAssignTask(id) {
     try {
       const res = await fetch(`${API_URL}/${id}/smart-assign`, {

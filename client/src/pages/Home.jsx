@@ -10,6 +10,7 @@ import { socketConnection } from "../utils/socket";
 
 const Home = () => {
   const socket = useMemo(() => socketConnection, []);
+
   const [data, setData] = useState({
     showTaskInput: false,
     action: "add",
@@ -17,13 +18,11 @@ const Home = () => {
     title: "",
     description: "",
   });
-
   const [taskData, setTaskData] = useState({
     Todo: [],
     "In Progress": [],
     Done: [],
   });
-
   const [usersData, setUsersData] = useState([]);
 
   const { tasks } = useSelector((state) => state.taskData);
@@ -44,6 +43,7 @@ const Home = () => {
         assignedTo: task?.assignedTo,
         action: newAction,
         taskId: task?._id,
+        updatedAt: task?.updatedAt,
         showTaskInput: true,
       });
     } else {
@@ -55,6 +55,7 @@ const Home = () => {
         priority: "",
         assignedTo: "",
         taskId: "",
+        updatedAt: "",
       });
     }
   };
@@ -171,7 +172,6 @@ const Home = () => {
       <Tasks
         taskData={taskData}
         handleChangeTaskInput={handleChangeTaskInput}
-        handleHideTaskInput={handleShowHideTaskInput}
         triggerRefetch={triggerRefetch}
       />
       <div className="users-and-activity-box">

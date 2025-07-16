@@ -65,6 +65,17 @@ export const updateTask = async (req, res) => {
         .json({ message: "Task not found", success: false });
     }
 
+    if (
+      new Date(updates.updatedAt).getTime() !==
+      new Date(existingTask.updatedAt).getTime()
+    ) {
+      return res.status(409).json({
+        message: "Conflict detected: Task was modified by someone else.",
+        success: false,
+        conflict: existingTask,
+      });
+    }
+
     const updatedTask = await taskServices.updateTask(id, updates);
 
     const logs = [];

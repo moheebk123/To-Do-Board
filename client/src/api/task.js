@@ -68,14 +68,12 @@ class TaskService {
 
       const data = await res.json();
 
-      if (!data.success) {
-        throw new Error(data.message || "Failed to update task");
-      }
-
       return {
         data: data.data,
         message: data.message,
-        type: "success",
+        type: data.success ? "success" : "error",
+        status: data.status,
+        conflict: data.conflict ? data.conflict : {}
       };
     } catch (error) {
       return {

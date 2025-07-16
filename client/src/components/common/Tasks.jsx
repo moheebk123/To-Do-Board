@@ -8,7 +8,6 @@ import "../../assets/styles/tasks.css";
 const Tasks = ({
   taskData,
   handleChangeTaskInput,
-  handleHideTaskInput,
   triggerRefetch,
 }) => {
   const dispatch = useDispatch();
@@ -47,8 +46,6 @@ const Tasks = ({
         type: response.type,
       })
     );
-
-    handleHideTaskInput();
   };
 
   const smartAssign = async (id) => {
@@ -63,8 +60,6 @@ const Tasks = ({
         type: response.type,
       })
     );
-
-    handleHideTaskInput();
   };
 
 

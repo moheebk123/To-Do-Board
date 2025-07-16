@@ -70,7 +70,7 @@ cd server
 npm install
 
 # Setup .env
-PORT=5000
+PORT=3000
 MONGODB_URI=your-mongodb-uri
 MONGODB_DB_NAME=todo-board
 ORIGIN=http://localhost:5173

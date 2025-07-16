@@ -1,12 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FaPlus } from "react-icons/fa";
 import { ActivityLog, Header, TaskInput, Tasks, Users } from "../components";
 import { actionLogService, taskService, userService } from "../api";
 import { actionLogActions, taskActions, usersActions } from "../store";
 import "../assets/styles/home.css";
+import { useCallback } from "react";
+import { socketConnection } from "../utils/socket";
 
 const Home = () => {
+  const socket = useMemo(() => socketConnection, []);
   const [data, setData] = useState({
     showTaskInput: false,
     action: "add",
@@ -14,6 +17,14 @@ const Home = () => {
     title: "",
     description: "",
   });
+
+  const [taskData, setTaskData] = useState({
+    Todo: [],
+    "In Progress": [],
+    Done: [],
+  });
+
+  const [usersData, setUsersData] = useState([]);
 
   const { tasks } = useSelector((state) => state.taskData);
   const { users } = useSelector((state) => state.users);
@@ -48,61 +59,87 @@ const Home = () => {
     }
   };
 
-  const fetchTasks = async () => {
-    const response = await taskService.getAllTasks();
-    if (response.type === "success" && response.tasks) {
-      dispatch(taskActions.updateTasks({ tasks: response.tasks }));
-    }
-  };
+  const triggerRefetch = useCallback(() => {
+    setTimeout(() => {
+      socket.emit("tasksChanges");
+    }, 1000);
+  }, [socket]);
 
-  const fetchUsers = async () => {
-    const response = await userService.getAllUsers();
-    if (response.type === "success" && response.users) {
-      dispatch(usersActions.updateUsers({ users: response.users }));
-    }
-  };
+  const fetchData = useCallback(() => {
+    const fetchTasks = async () => {
+      const response = await taskService.getAllTasks();
+      if (response.type === "success" && response.tasks) {
+        dispatch(taskActions.updateTasks({ tasks: response.tasks }));
+      }
+    };
 
-  const fetchLogs = async () => {
-    const response = await actionLogService.getLatestLogs();
-    if (response.type === "success" && response.logs) {
-      dispatch(actionLogActions.updateActionLog({ logs: response.logs }));
-    }
-  };
+    const fetchUsers = async () => {
+      const response = await userService.getAllUsers();
+      if (response.type === "success" && response.users) {
+        dispatch(usersActions.updateUsers({ users: response.users }));
+      }
+    };
 
-  const fetchData = () => {
+    const fetchLogs = async () => {
+      const response = await actionLogService.getLatestLogs();
+      if (response.type === "success" && response.logs) {
+        dispatch(actionLogActions.updateActionLog({ logs: response.logs }));
+      }
+    };
+
     fetchTasks();
     fetchUsers();
     fetchLogs();
-  };
+  }, [dispatch]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
     fetchData();
-  }, [dispatch]);
+  }, [dispatch, fetchData]);
 
-  const taskData = {
-    Todo: [],
-    "In Progress": [],
-    Done: [],
-  }
+  useEffect(() => {
+    console.log(socket)
+    socket.on("changesFetched", (data) => {
+      const { tasks, logs } = data;
+      console.log(data)
+      dispatch(taskActions.updateTasks({ tasks }));
+      dispatch(actionLogActions.updateActionLog({ logs }));
+    });
 
-  tasks.forEach((task) => {
-    if (taskData[task.status]) {
-      taskData[task.status].push(task);
-    }
-  });
-
-  const usersData = users.map((user) => {
-    const assignedTasks = tasks.reduce(
-      (assignedTasks, tasks) =>
-        tasks.assignedTo === user.userName ? assignedTasks + 1 : assignedTasks,
-      0
-    );
-    return {
-      ...user,
-      taskCount: assignedTasks,
+    return () => {
+      socket.off("changesFetched");
     };
-  });
+  }, [dispatch, socket]);
+
+  useEffect(() => {
+    const taskGroups = {
+      Todo: [],
+      "In Progress": [],
+      Done: [],
+    };
+
+    tasks.forEach((task) => {
+      if (taskGroups[task.status]) {
+        taskGroups[task.status].push(task);
+      }
+    });
+
+    setTaskData(taskGroups);
+
+    const computedUsers = users.map((user) => {
+      const assignedTasks = tasks.reduce(
+        (count, task) =>
+          task.assignedTo === user.userName ? count + 1 : count,
+        0
+      );
+      return {
+        ...user,
+        taskCount: assignedTasks,
+      };
+    });
+
+    setUsersData(computedUsers);
+  }, [tasks, users]);
 
   return (
     <div>
@@ -112,7 +149,7 @@ const Home = () => {
           action={data.action}
           task={data}
           handleHideTaskInput={handleShowHideTaskInput}
-          fetchData={fetchData}
+          triggerRefetch={triggerRefetch}
         />
       ) : (
         <button
@@ -127,7 +164,7 @@ const Home = () => {
         taskData={taskData}
         handleChangeTaskInput={handleChangeTaskInput}
         handleHideTaskInput={handleShowHideTaskInput}
-        fetchData={fetchData}
+        triggerRefetch={triggerRefetch}
       />
       <div className="users-and-activity-box">
         <Users usersData={usersData} />

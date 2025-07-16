@@ -1,4 +1,4 @@
-const API_URL = `${String(import.meta.env.VITE_BACKEND_API_URL)}/users`;
+const API_URL = `${String(import.meta.env.VITE_BACKEND_API_URL)}/api/users`;
 
 class UserService {
   async getAllUsers() {

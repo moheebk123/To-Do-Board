@@ -1,4 +1,4 @@
-const API_URL = `${String(import.meta.env.VITE_BACKEND_API_URL)}/auth`;
+const API_URL = `${String(import.meta.env.VITE_BACKEND_API_URL)}/api/auth`;
 
 class AuthService {
   async login(payload) {

@@ -1,4 +1,4 @@
-const API_URL = `${String(import.meta.env.VITE_BACKEND_API_URL)}/tasks`;
+const API_URL = `${String(import.meta.env.VITE_BACKEND_API_URL)}/api/tasks`;
 
 class TaskService {
   async getAllTasks() {

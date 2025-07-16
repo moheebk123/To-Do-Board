@@ -4,13 +4,18 @@ import { taskService } from "../../api";
 import { alertActions } from "../../store";
 import "../../assets/styles/tasks.css";
 
-const Tasks = ({ taskData, handleChangeTaskInput, handleHideTaskInput, fetchData }) => {
+const Tasks = ({
+  taskData,
+  handleChangeTaskInput,
+  handleHideTaskInput,
+  triggerRefetch,
+}) => {
   const dispatch = useDispatch();
 
   const deleteTask = async (id) => {
     const response = await taskService.deleteTask(id);
     if (response.type === "success") {
-      fetchData();
+      triggerRefetch();
     }
     dispatch(
       alertActions.showAlert({
@@ -26,7 +31,7 @@ const Tasks = ({ taskData, handleChangeTaskInput, handleHideTaskInput, fetchData
   const smartAssign = async (id) => {
     const response = await taskService.smartAssignTask(id);
     if (response.type === "success") {
-      fetchData();
+      triggerRefetch();
     }
     dispatch(
       alertActions.showAlert({
@@ -86,7 +91,12 @@ const Tasks = ({ taskData, handleChangeTaskInput, handleHideTaskInput, fetchData
                       {task.assignedTo || "Not Assigned"}
                     </div>
                     {!task.assignedTo && (
-                      <button className="btn save assign" onClick={() => smartAssign(task._id)}>Smart Assign</button>
+                      <button
+                        className="btn save assign"
+                        onClick={() => smartAssign(task._id)}
+                      >
+                        Smart Assign
+                      </button>
                     )}
                   </div>
 

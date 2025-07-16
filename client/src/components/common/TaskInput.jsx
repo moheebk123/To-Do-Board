@@ -5,7 +5,12 @@ import { taskService } from "../../api";
 import { alertActions } from "../../store";
 import "../../assets/styles/taskForm.css";
 
-const TaskInput = ({ task = {}, action, handleHideTaskInput, fetchData }) => {
+const TaskInput = ({
+  task = {},
+  action,
+  handleHideTaskInput,
+  triggerRefetch,
+}) => {
   const { users } = useSelector((state) => state.users);
 
   const dispatch = useDispatch();
@@ -48,7 +53,7 @@ const TaskInput = ({ task = {}, action, handleHideTaskInput, fetchData }) => {
 
   const handleSubmit = () => {
     action === "add" ? addTask() : updateTask(task.taskId);
-    fetchData();
+    triggerRefetch();
     handleHideTaskInput();
   };
 

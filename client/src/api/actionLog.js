@@ -1,4 +1,4 @@
-const API_URL = `${String(import.meta.env.VITE_BACKEND_API_URL)}/logs`;
+const API_URL = `${String(import.meta.env.VITE_BACKEND_API_URL)}/api/logs`;
 
 class ActionLogService {
   async getLatestLogs() {

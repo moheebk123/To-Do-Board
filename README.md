@@ -146,19 +146,25 @@ When a user tries to update a task:
 
 ## 🔗 Live Demo
 
-🔴 **Live App:** [https://to-do-board-one.vercel.app](https://to-do-board-one.vercel.app)
+ **Live App:** [https://to-do-board-one.vercel.app](https://to-do-board-one.vercel.app)
 
 ---
 
 ## 📹 Video Demo
 
-🔴 **Demo Video:** [Watch here](./project-documents/ToDo_Board_Demo.mp4)
+ **Demo Video:** [Watch here](https://drive.google.com/file/d/1f8pNaFM_rm7IxrQHuURsgOosHJYpM_KK/view?usp=sharing)
+
+---
+
+## 🧠 Logic Documentation
+
+ **Logic Document:** [Logic Document PDF](./project-documents/Logic_Document.pdf)
 
 ---
 
 ## ✨ Screenshot
 
-🔴 **App Screenshot** ![App Screenshot](./project-documents/project-image.png)
+ **App Screenshot** ![App Screenshot](./project-documents/project-image.png)
 
 ---
 

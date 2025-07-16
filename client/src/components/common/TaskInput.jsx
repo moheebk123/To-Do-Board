@@ -79,6 +79,7 @@ const TaskInput = ({
     const payload = {
       title: conflictData.current.title + formData.title,
       description: conflictData.current.description + formData.description,
+      updatedAt: formData.updatedAt,
     };
     const response = await taskService.updateTask(task.taskId, payload);
     dispatch(

@@ -15,7 +15,7 @@ const TaskInput = ({
 
   const [conflictData, setConflictData] = useState({
     show: false,
-    current: {}
+    current: {},
   });
 
   const dispatch = useDispatch();
@@ -63,19 +63,35 @@ const TaskInput = ({
     if (response.type === "success") {
       triggerRefetch();
       handleHideTaskInput();
-    } else if (response.type === "error" && response.message.includes("Conflict detected")) {
-      setConflictData({show: true, current: response.conflict});
-      setFormData((prev) => ({ ...prev, updatedAt: response.conflict.updatedAt }));
+    } else if (
+      response.type === "error" &&
+      response.message.includes("Conflict detected")
+    ) {
+      setConflictData({ show: true, current: response.conflict });
+      setFormData((prev) => ({
+        ...prev,
+        updatedAt: response.conflict.updatedAt,
+      }));
     }
   };
 
-  const handleMerge = () => {
-    setFormData((prev) => ({
-      ...prev,
+  const handleMerge = async () => {
+    const payload = {
       title: conflictData.current.title + formData.title,
       description: conflictData.current.description + formData.description,
-    }));
-    updateTask(task.taskId);
+    };
+    const response = await taskService.updateTask(task.taskId, payload);
+    dispatch(
+      alertActions.showAlert({
+        show: true,
+        message: response.message,
+        type: response.type,
+      })
+    );
+    if (response.type === "success") {
+      triggerRefetch();
+      handleHideTaskInput();
+    }
   };
 
   const handleOverwrite = () => {
@@ -83,9 +99,9 @@ const TaskInput = ({
   };
 
   const handleClose = () => {
-    setConflictData({ show: false, current: {} })
+    setConflictData({ show: false, current: {} });
     handleHideTaskInput();
-  }
+  };
 
   const handleSubmit = () => {
     action === "add" ? addTask() : updateTask(task.taskId);

@@ -38,6 +38,9 @@ const TaskInput = ({
         type: response.type,
       })
     );
+    if (response.type === "success") {
+      triggerRefetch();
+    }
   };
 
   const updateTask = async (id) => {
@@ -49,11 +52,13 @@ const TaskInput = ({
         type: response.type,
       })
     );
+    if (response.type === "success") {
+      triggerRefetch();
+    }
   };
 
   const handleSubmit = () => {
     action === "add" ? addTask() : updateTask(task.taskId);
-    triggerRefetch();
     handleHideTaskInput();
   };
 

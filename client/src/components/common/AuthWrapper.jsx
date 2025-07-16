@@ -1,11 +1,14 @@
-import { useRef } from "react";
+import { useMemo, useRef } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import authService from "../../api/auth";
 import { alertActions, userDataActions } from "../../store";
 import "../../assets/styles/auth.css";
+import { socketConnection } from "../../utils/socket";
 
 const AuthWrapper = ({ type = "login" }) => {
+  const socket = useMemo(() => socketConnection, []);
+
   const userNameRef = useRef(null);
   const passwordRef = useRef(null);
 
@@ -66,6 +69,10 @@ const AuthWrapper = ({ type = "login" }) => {
     );
 
     if (response.user && response.user.userName) {
+      if (type === "register") {
+        console.log("user registered")
+        socket.emit("userRegister");
+      }
       dispatch(
         userDataActions.updateUser(response.user)
       );

@@ -60,9 +60,7 @@ const Home = () => {
   };
 
   const triggerRefetch = useCallback(() => {
-    setTimeout(() => {
-      socket.emit("tasksChanges");
-    }, 1000);
+    socket.emit("tasksChanges");
   }, [socket]);
 
   const fetchData = useCallback(() => {
@@ -98,16 +96,26 @@ const Home = () => {
   }, [dispatch, fetchData]);
 
   useEffect(() => {
-    console.log(socket)
     socket.on("changesFetched", (data) => {
-      const { tasks, logs } = data;
-      console.log(data)
+      const { tasks, logs, users } = data;
       dispatch(taskActions.updateTasks({ tasks }));
       dispatch(actionLogActions.updateActionLog({ logs }));
+      dispatch(usersActions.updateUsers({ users }));
     });
 
     return () => {
       socket.off("changesFetched");
+    };
+  }, [dispatch, socket]);
+
+  useEffect(() => {
+    socket.on("usersFetched", (data) => {
+      const { users } = data;
+      dispatch(usersActions.updateUsers({ users }));
+    });
+
+    return () => {
+      socket.off("usersFetched");
     };
   }, [dispatch, socket]);
 
